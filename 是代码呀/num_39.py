@@ -1,28 +1,30 @@
-# num_39
-# 组合总和
+# 参照别人的思路
 
 
 class Solution:
     def combinationSum(self, candidates, target):
-        def repeat(i, one_res):
-            if sum(one_res) == target:
-                res.append(one_res)
-                return
-            if sum(one_res) > target or i == len(candidates):
-                return
-            for j in range(i, len(candidates)):
-                # 还可以优化一下
-                if sum(one_res) > target:
-                    break
-                repeat(j, one_res+[candidates[j]])
-
+        candidates.sort(reverse=False)
+        path = []
         res = []
-        one_res = []
-        repeat(0, one_res)
+        self.huisu(candidates,target,path,res)
         return res
+
+    def huisu(self, candidates, target, path,res):
+        if target == 0:
+            res.append(path[:])
+
+        for index in range(0, len(candidates)):
+            residue = target - candidates[index]
+            if residue < 0:
+                break
+            path.append(candidates[index])
+            self.huisu(candidates, residue, path, res)
+            path.pop()
 
 
 if __name__ == '__main__':
-    candidates = [2,3,6,7]
+    candidates = [2, 3, 6, 7]
     target = 7
-    print(Solution().combinationSum(candidates, target))
+    solution = Solution()
+    result = solution.combinationSum(candidates, target)
+    print(result)
